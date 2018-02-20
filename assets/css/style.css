@@ -33,9 +33,9 @@ h5,p {
   border: 2px solid red;
 }
 
-/* .current-oponent {
-  
-} */
+.bg-danger {
+  width: 100%;
+}
 
 /*media queries*/
 
