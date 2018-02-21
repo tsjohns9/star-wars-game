@@ -6,30 +6,24 @@ $(document).ready(function() {
   var selectCharacter = true;
   var selectOponent = false;
   var canAttack = false;
+  var vsPlayerH2Span;
   var versesH2 = $(`<h2 class="text-center mb-4"></h2>`);
   var attackBtn = $(`<div class="mb-3 mb-md-0 text-center"><button type="button" class="btn btn-success" id="attack-btn">Attack</button></div>`);
   var healthBar = $(`<div class="progress"><div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div></div>`);
-  var bodyOriginal = $('body').children().clone();
 
-  var clear = function() {
-    $('body').empty();
-    $(bodyOriginal).appendTo('body');
-  };
-
-  var Character = function(health, totalHealth, attack, counter) {
+  var Character = function(health, totalHealth, attack, origAttack, counter, ) {
     this.health = health;
     this.totalHealth = totalHealth;
     this.attack = attack;
     this.counter = counter;
+    this.origAttack = origAttack;
   }
 
   //sets character object to their html element
-  $('#luke').data(new Character(200, 200, 25, 20));
-  $('#kylo').data(new Character(100, 100, 8, 5));
-  $('#rey').data(new Character(150, 150, 5, 8));
-  $('#snoke').data(new Character(180, 180, 20, 15));
-
-  // console.log($('#luke').data().name)
+  $('#luke').data(new Character(225, 225, 20, 20, 15));
+  $('#kylo').data(new Character(130, 130, 10, 10, 7));
+  $('#rey').data(new Character(120, 120, 7, 7, 5));
+  $('#snoke').data(new Character(165, 165, 15, 15, 10));
 
   //attaches click event to attack-btn. Attached to .verses div, and then specifies a selector because the btn was dynamically generated
   $('.verses').on('click', '#attack-btn', function() {
@@ -40,7 +34,7 @@ $(document).ready(function() {
 
       //deals double after first move
       if (counter > 1) {
-        activeCharacter.attack *= 2;
+        activeCharacter.attack += activeCharacter.origAttack;
         activeOpponent.health -= activeCharacter.attack;
         activeCharacter.health -= activeOpponent.counter;
       } else {
@@ -74,6 +68,7 @@ $(document).ready(function() {
     //Removes defeated enemy and allows selection of new enemy
     if (activeOpponent.health === 0) {
       canAttack = false;
+
       setTimeout(function() {
         $('#' + activeOpponent.name).parent().hide();
         $(versesH2).html('Choose Next Opponent');
@@ -81,7 +76,7 @@ $(document).ready(function() {
 
         //restarts game if it is over
         if ($('.all-characters .d-flex').children().length === 0) {
-          clear();
+          location.reload();
         }
       }, 1500);
 
@@ -93,12 +88,12 @@ $(document).ready(function() {
       canAttack = false;
       $(versesH2).html('Game Over');
       setTimeout(function() {
-        clear();
+        location.reload();
       }, 1500);
     }
   });
 
-  //allows a character to be selected at the start of the game.
+////allows a character to be selected at the start of the game.
   $('.character-container').click(function() {
     if (selectCharacter) {
       activeCharacter = $(this).data();
@@ -110,7 +105,7 @@ $(document).ready(function() {
       //all other characters become opponents
       $('.all-characters').find('.character-container').not('.selected-character').addClass('opponents');
 
-      //moves selected character to verses area. Adjusts columns to keep responsive in verses area  
+      //moves selected character to verses area
       $(this).parent().appendTo('.verses');
 
       //creates health bar
@@ -118,12 +113,12 @@ $(document).ready(function() {
       $(healthBar).appendTo(cardBody);
 
       //selects players data-name and adds it to h2 tag in verses area
-      var vsPlayerH2Span = $(`<span>${$(this).find('.card-title').text()} VS. </span>`);
+      vsPlayerH2Span = $(`<span>${$(this).find('.card-title').text()} VS. </span>`);
       $(vsPlayerH2Span).appendTo(versesH2);
       $(versesH2).prependTo('.fight-area');
     }
 
-    //selects current oponent.
+/////selects current oponent.
     if ($(this).hasClass('opponents') && selectOponent) {
       $(this).addClass('current-oponent');
       activeOpponent = $(this).data();
@@ -136,16 +131,21 @@ $(document).ready(function() {
         $(attackBtn).toggle();
       }
 
-      //moves selected character to verses area, and adjusts columns to keep responsive once in verses area
+      //moves selected character to verses area
       $(this).parent().appendTo('.verses');
+
+      if ($('.all-characters .d-flex').children().length === 0) {
+        $('.all-characters').remove();
+      }
 
       //creates health bar
       var cardBody = $(this).find('.card-body');
       $(healthBar).clone().appendTo(cardBody);
   
-
       //selects current oppoents data-name and adds it to h2 tag in verses area
       var vsEnemyH2Span = $(`<span>${$(this).find('.card-title').text()}</span>`);
+      $(versesH2).empty();
+      $(vsPlayerH2Span).appendTo(versesH2);
       $(vsEnemyH2Span).appendTo(versesH2);
       $('.main-header').text('Remaining Opponents');
     }
