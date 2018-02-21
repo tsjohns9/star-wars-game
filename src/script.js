@@ -1,5 +1,4 @@
 $(document).ready(function() {
-
   var counter = 0;
   var activeCharacter;
   var activeOpponent;
@@ -25,17 +24,12 @@ $(document).ready(function() {
   $('#rey').data(new Character(125, 125, 7, 7, 5));
   $('#snoke').data(new Character(165, 165, 15, 15, 9));
 
-  // $('.close').on('click', function() {
-  //   location.reload();
-  // });
-
-  //attaches click event to attack-btn. Attached to .verses div, and then specifies a selector because the btn was dynamically generated
+/////attaches click event to attack-btn. Attached to .verses div, and then specifies a selector because the btn was dynamically generated
   $('.verses').on('click', '#attack-btn', function() {
     if (canAttack) {
       counter++;
       var startingHealth = activeCharacter.totalHealth;
       var startingOpponentHealth = activeOpponent.totalHealth;
-
       //deals double after first move
       if (counter > 1) {
         activeCharacter.attack += activeCharacter.origAttack;
@@ -48,7 +42,6 @@ $(document).ready(function() {
 
       var healthWidth = activeCharacter.health / startingHealth * 100;
       var opponentHealthWidth = activeOpponent.health / startingOpponentHealth * 100;
-      
       //deals attack and counter damage. Displays percentage of health left on progress bar.
       if (activeCharacter.health > 0) {
         $('#' + activeCharacter.name).find('.card-body p').text(activeCharacter.health);
@@ -68,12 +61,10 @@ $(document).ready(function() {
       }
     }
 
-
     //Removes defeated enemy and allows selection of new enemy
     if (activeOpponent.health === 0) {
       canAttack = false;
-
-      //restarts game if it is over
+      //restarts game on win
       if ($('.all-characters .d-flex').children().length === 0) {
         $(versesH2).removeClass('alert-warning').addClass('alert-success').html(`You Won!`);
         setTimeout(function() {
@@ -87,10 +78,10 @@ $(document).ready(function() {
             selectOponent = true;
           }, 1500);      
         }
-
       $(attackBtn).toggle();
     }
 
+    //restarts game on loss
     if (activeCharacter.health === 0) {
       canAttack = false;
       $(versesH2).removeClass('alert-warning').addClass('alert-danger').html(`Game Over`);
@@ -110,10 +101,8 @@ $(document).ready(function() {
       $(this).addClass('selected-character');
       $('.main-header').text('Choose Your Opponent');
 
-      //all other characters become opponents
+      //designates opponents. moves selected character to verses area
       $('.all-characters').find('.character-container').not('.selected-character').addClass('opponents');
-
-      //moves selected character to verses area
       $(this).parent().appendTo('.verses');
 
       //creates health bar
@@ -142,6 +131,7 @@ $(document).ready(function() {
       //moves selected character to verses area
       $(this).parent().appendTo('.verses');
 
+      //Cleares out all-characters container if no opponents remain
       if ($('.all-characters .d-flex').children().length === 0) {
         $('.all-characters').remove();
       }
@@ -158,5 +148,4 @@ $(document).ready(function() {
       $('.main-header').text('Remaining Opponents');
     }
   });
-
 });
