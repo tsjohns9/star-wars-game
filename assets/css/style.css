@@ -1,6 +1,17 @@
 /* global styles */
+@font-face {
+  font-family: Rebellion;
+  src: url('../fonts/pixel-sagas_rebellion/Rebellion.otf');
+}
+
 * {
   box-sizing: border-box;
+  font-family: Rebellion, "Times New Roman", Times, serif;
+}
+
+body {
+  background: url('../images/bg-2.jpeg') no-repeat fixed center;
+  background-size: cover;
 }
 
 img {
@@ -9,11 +20,17 @@ img {
   /* padding: 5px; */
 }
 
+h1 {
+  color: white;
+}
+
 h5,p {
   font-size: 14px;
 }
 
 /* bootstrap styles */
+
+
 .card:hover {
   cursor: pointer;
 }
@@ -30,11 +47,11 @@ h5,p {
 }
 
 .selected-character {
-  border: 2px solid green;
+  border: 3px solid green;
 }
 
 .opponents {
-  border: 2px solid red;
+  border: 3px solid red;
 }
 
 

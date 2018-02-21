@@ -11,8 +11,16 @@
 <body>
 
   <!-- character area -->
-  <div class="container mb-5 all-characters">
-    <h1 class="text-center mb-4 main-header">Choose Your Character</h1>
+
+  <!-- <div class="alert alert-danger alert-dismissible fade show w-25 mx-auto d-none" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="alert-heading text-center">Game Over</h4>
+  </div> -->
+
+  <div class="container mt-5 all-characters">
+    <h1 class="text-center mb-5 main-header">Choose Your Character</h1>
     <div class="d-flex justify-content-around row">
       <div class="text-center mb-3 mb-lg-0">
         <div class="card mx-auto character-container" data-name="luke" id="luke">
@@ -37,7 +45,7 @@
           <img class="card-img-top" src="./assets/images/rey.jpg" alt="Rey">
           <div class="card-body">
             <h5 class="card-title">Rey</h5>
-            <p>120</p>
+            <p>125</p>
           </div>         
         </div>
       </div>
@@ -51,22 +59,20 @@
         </div>
       </div>  
     </div>
-
     </div> <!-- end all-characters div -->
 
-
-    <div class="fight-area">
+    <div class="fight-area my-5">
       <div class="container">
         <div class="d-flex justify-content-around row row verses">
-
         </div>
       </div>
-
     </div>
   
 
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   <script src="./src/script.js" type="text/javascript"></script>
 </body>
 </html>
