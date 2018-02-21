@@ -12,6 +12,10 @@ h5,p {
   font-size: 14px;
 }
 
+.btn {
+
+}
+
 .card:hover {
   cursor: pointer;
 }
@@ -22,7 +26,7 @@ h5,p {
 
 .character-container {
   padding: 5px;
-  width: 7rem;
+  width: 6.5rem;
 }
 
 .selected-character {
@@ -33,7 +37,15 @@ h5,p {
   border: 2px solid red;
 }
 
-.bg-danger {
+/* .bg-danger {
+  width: 100%;
+} */
+
+.character-health {
+  width: 100%;
+}
+
+.opponent-health {
   width: 100%;
 }
 
@@ -41,7 +53,13 @@ h5,p {
 
 @media(min-width: 350px) {
   .character-container {
-    width: 9rem;
+    width: 8rem;
+  }  
+}
+
+@media(min-width: 450px) {
+  .character-container {
+    width: 10rem;
   }  
 }
 
@@ -63,5 +81,11 @@ h5,p {
   }
   h5,p {
     font-size: 20px;
+  }
+}
+
+@media(min-width: 992px) {
+  .width {
+    width: 25%;
   }
 }
