@@ -9,6 +9,7 @@ $(document).ready(function() {
   var versesH2 = $(`<h2 class="text-center mb-4 alert alert-warning w-50 mx-auto"></h2>`);
   var attackBtn = $(`<div class="mb-3 mb-md-0 text-center"><button type="button" class="btn btn-success" id="attack-btn">Attack</button></div>`);
   var healthBar = $(`<div class="progress"><div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div></div>`);
+  var opponentHealthBar = $(`<div class="progress"><div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div></div>`);
 
   //used to create our four characters
   var Character = function(health, totalHealth, attack, origAttack, counter, ) {
@@ -51,30 +52,35 @@ $(document).ready(function() {
         $('#' + activeCharacter.name).find('.card-body p').text(activeCharacter.health);
         $('#' + activeCharacter.name).find('.bg-danger').css('width', healthWidth + '%');      
       } else {
+        //runs when character health is less than 0. displays an empty health bar, and alerts the game over modal.
         activeCharacter.health = 0;
+        canAttack = false;
+        $(versesH2).remove();
         $('#' + activeCharacter.name).find('.card-body p').text(activeCharacter.health);
-        $('#' + activeCharacter.name).find('.bg-danger').css('width', '0');  
+        $('#' + activeCharacter.name).find('.bg-danger').css('width', '0');
+        $('.alert-danger').removeClass('d-none')
+        $('#modal-title').text('Game Over');
+        $('.modal-header').removeClass('alert-success').addClass('alert-danger');
+        $('#new-game-modal').modal('show');
       }
+
+      //checks if opponent has health. displays opponent health bar
       if (activeOpponent.health > 0) {
         $('#' + activeOpponent.name).find('.card-body p').text(activeOpponent.health);
         $('#' + activeOpponent.name).find('.bg-danger').css('width', opponentHealthWidth + '%');      
       } else {
+        //runs when opponent has no health. displays empty health bar.
         activeOpponent.health = 0;
+        canAttack = false;
+        $(attackBtn).toggle();
         $('#' + activeOpponent.name).find('.card-body p').text(activeOpponent.health);
-        $('#' + activeOpponent.name).find('.bg-danger').css('width', '0');  
-      }
-    }
-
-    //Removes defeated enemy and allows selection of new enemy
-    if (activeOpponent.health === 0) {
-      canAttack = false;
-      $(attackBtn).toggle();
-      //If all opponents are defeated then the game is over
-      if ($('.all-characters .d-flex').children().length === 0) {
-        $(versesH2).remove();
-        $('#new-game-modal').modal('show');
-      //allows selection of new opponent if one still exists.
-      } else {
+        $('#' + activeOpponent.name).find('.bg-danger').css('width', '0');
+        //If all opponents are defeated then the game is over
+        if ($('.all-characters .d-flex').children().length === 0) {
+          $(versesH2).remove();
+          $('#new-game-modal').modal('show');
+        //allows selection of new opponent if one still exists.
+        } else {
           //Displays the name of the opponent you defeated
           $(versesH2).html(`You defeated ${activeOpponent.name}!`);
           setTimeout(function() {
@@ -84,17 +90,9 @@ $(document).ready(function() {
             selectOponent = true;
           }, 1500);      
         }
+      }
     }
 
-    //restarts game on loss. removes verses h2 tag. changes modal alert style
-    if (activeCharacter.health === 0) {
-      canAttack = false;
-      $(versesH2).remove();
-      $('.alert-danger').removeClass('d-none')
-      $('#modal-title').text('Game Over');
-      $('.modal-header').removeClass('alert-success').addClass('alert-danger');
-      $('#new-game-modal').modal('show');
-    }
   });
 
 ////allows a character to be selected at the start of the game.
@@ -143,8 +141,9 @@ $(document).ready(function() {
       }
 
       //creates health bar
-      $(healthBar).clone().appendTo($(this).find('.card-body'));
-  
+      $(opponentHealthBar).find('.bg-danger').css('width', '100%');
+      $(opponentHealthBar).appendTo($(this).find('.card-body'));
+      
       //selects current oppoents name and adds it to h2 tag in verses area
       var vsEnemyH2Span = $(`<span>${$(this).find('.card-title').text()}</span>`);
       $(versesH2).empty();
