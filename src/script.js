@@ -24,13 +24,19 @@ $(document).ready(function() {
   $('#rey').data(new Character(125, 125, 7, 7, 5));
   $('#snoke').data(new Character(165, 165, 15, 15, 9));
 
+////attaches click event to new game button, which is in a modal that pops up when the game is over
+  $('#new-game-btn, .close').on('click', function() {
+    location.reload();
+  });
+
 /////attaches click event to attack-btn. Attached to .verses div, and then specifies a selector because the btn was dynamically generated
   $('.verses').on('click', '#attack-btn', function() {
     if (canAttack) {
       counter++;
-      var startingHealth = activeCharacter.totalHealth;
+      //keeps track each attack to stack attack power. 
+      var startingHealth = activeCharacter.totalHealth;  //may not need these 2 variables
       var startingOpponentHealth = activeOpponent.totalHealth;
-      //deals double after first move
+      //stacks damage after first move. origAttack is what gets added to activeCharacter.Attack.
       if (counter > 1) {
         activeCharacter.attack += activeCharacter.origAttack;
         activeOpponent.health -= activeCharacter.attack;
@@ -40,9 +46,9 @@ $(document).ready(function() {
         activeCharacter.health -= activeOpponent.counter;
       }
 
+      //Displays percentage of health left on progress bar if health is greater than 0.
       var healthWidth = activeCharacter.health / startingHealth * 100;
       var opponentHealthWidth = activeOpponent.health / startingOpponentHealth * 100;
-      //deals attack and counter damage. Displays percentage of health left on progress bar.
       if (activeCharacter.health > 0) {
         $('#' + activeCharacter.name).find('.card-body p').text(activeCharacter.health);
         $('#' + activeCharacter.name).find('.bg-danger').css('width', healthWidth + '%');      
@@ -64,31 +70,33 @@ $(document).ready(function() {
     //Removes defeated enemy and allows selection of new enemy
     if (activeOpponent.health === 0) {
       canAttack = false;
-      //restarts game on win
+      $(attackBtn).toggle();
+      //If all opponents are defeated then the game is over
       if ($('.all-characters .d-flex').children().length === 0) {
-        $(versesH2).removeClass('alert-warning').addClass('alert-success').html(`You Won!`);
-        setTimeout(function() {
-          location.reload();
-        }, 2000);
+        // $(versesH2).removeClass('alert-warning').addClass('alert-success').html(`You Won!`);
+        $(versesH2).remove();
+        $('#new-game-modal').modal('show');
+      //allows selection of new opponent if one still exists.
       } else {
+          //Displays the name of the opponent you defeated
           $(versesH2).html(`You defeated ${activeOpponent.name}!`);
           setTimeout(function() {
+            //Removes defeated opponent
             $('#' + activeOpponent.name).parent().hide();
             $(versesH2).html('Choose Next Opponent');
             selectOponent = true;
           }, 1500);      
         }
-      $(attackBtn).toggle();
     }
 
-    //restarts game on loss
+    //restarts game on loss. removes verses h2 tag. changes modal alert style
     if (activeCharacter.health === 0) {
       canAttack = false;
-      $(versesH2).removeClass('alert-warning').addClass('alert-danger').html(`Game Over`);
+      $(versesH2).remove();
       $('.alert-danger').removeClass('d-none')
-      setTimeout(function() {
-        location.reload();
-      }, 2000);
+      $('#modal-title').text('Game Over');
+      $('.modal-header').removeClass('alert-success').addClass('alert-danger');
+      $('#new-game-modal').modal('show');
     }
   });
 
