@@ -10,6 +10,7 @@ $(document).ready(function() {
   var attackBtn = $(`<div class="mb-3 mb-md-0 text-center"><button type="button" class="btn btn-success mb-2" id="attack-btn">Attack</button><div id="damage-pts"></div></div>`);
   var healthBar = $(`<div class="progress"><div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div></div>`);
   var opponentHealthBar = $(`<div class="progress"><div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div></div>`);
+  $("[data-toggle='tooltip']").tooltip();   //initializes bootstrap tooltip
 
   //used to create our four characters
   var Character = function(health, totalHealth, attack, origAttack, counter, ) {
@@ -108,7 +109,10 @@ $(document).ready(function() {
       activeCharacter = $(this).data();
       selectCharacter = false;
       selectOponent = true;
+      //specifies your character
       $(this).addClass('selected-character');
+      //hides tooltip when character is selected
+      $('#' + activeCharacter.name).tooltip('dispose');
       $('.main-header').text('Choose Your Opponent');
 
       //designates opponents. moves selected character to verses area
@@ -124,7 +128,7 @@ $(document).ready(function() {
       $(versesH2).prependTo('.fight-area');
     }
 
-/////selects current oponent.
+/////selects current oponent
     if ($(this).hasClass('opponents') && selectOponent) {
       $(this).addClass('current-oponent');
       //sets current opponent stats
@@ -141,6 +145,8 @@ $(document).ready(function() {
 
       //moves selected character to verses area
       $(this).parent().appendTo('.verses');
+      //hides tooltip when character is selected
+      $('#' + activeOpponent.name).tooltip('dispose');
 
       //Cleares out all-characters container if no opponents remain
       if ($('.all-characters .d-flex').children().length === 0) {
