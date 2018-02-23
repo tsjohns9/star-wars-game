@@ -1,15 +1,16 @@
 $(document).ready(function() {
-  var counter = 0;
-  var activeCharacter;
-  var activeOpponent;
-  var selectCharacter = true;
-  var selectOponent = false;
-  var canAttack = false;
-  var vsPlayerH2Span;
+  var counter = 0;                      //counts attacks to add damage multiplier
+  var activeCharacter;                  //current character
+  var activeOpponent;                   //current opponent
+  var selectCharacter = true;           //if true, then you can select a new character. Only true at start.
+  var selectOponent = false;            //if true, you can select a new opponent.
+  var canAttack = false;                //if false, you cannot attack and attack button does not show up
+  var vsPlayerH2Span;                   //h2 changes to display current character and opponent, and only shows up when character is selected.
   var versesH2 = $(`<h2 class="text-center mb-4 alert alert-warning w-50 mx-auto"></h2>`);
   var attackBtn = $(`<div class="mb-3 mb-md-0 text-center"><button type="button" class="btn btn-success" id="attack-btn">Attack</button></div>`);
   var healthBar = $(`<div class="progress"><div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div></div>`);
 
+  //used to create our four characters
   var Character = function(health, totalHealth, attack, origAttack, counter, ) {
     this.health = health;
     this.totalHealth = totalHealth;
@@ -33,9 +34,6 @@ $(document).ready(function() {
   $('.verses').on('click', '#attack-btn', function() {
     if (canAttack) {
       counter++;
-      //keeps track each attack to stack attack power. 
-      var startingHealth = activeCharacter.totalHealth;  //may not need these 2 variables
-      var startingOpponentHealth = activeOpponent.totalHealth;
       //stacks damage after first move. origAttack is what gets added to activeCharacter.Attack.
       if (counter > 1) {
         activeCharacter.attack += activeCharacter.origAttack;
@@ -47,8 +45,8 @@ $(document).ready(function() {
       }
 
       //Displays percentage of health left on progress bar if health is greater than 0.
-      var healthWidth = activeCharacter.health / startingHealth * 100;
-      var opponentHealthWidth = activeOpponent.health / startingOpponentHealth * 100;
+      var healthWidth = activeCharacter.health / activeCharacter.totalHealth * 100;
+      var opponentHealthWidth = activeOpponent.health / activeOpponent.totalHealth * 100;
       if (activeCharacter.health > 0) {
         $('#' + activeCharacter.name).find('.card-body p').text(activeCharacter.health);
         $('#' + activeCharacter.name).find('.bg-danger').css('width', healthWidth + '%');      
@@ -73,7 +71,6 @@ $(document).ready(function() {
       $(attackBtn).toggle();
       //If all opponents are defeated then the game is over
       if ($('.all-characters .d-flex').children().length === 0) {
-        // $(versesH2).removeClass('alert-warning').addClass('alert-success').html(`You Won!`);
         $(versesH2).remove();
         $('#new-game-modal').modal('show');
       //allows selection of new opponent if one still exists.
@@ -103,6 +100,7 @@ $(document).ready(function() {
 ////allows a character to be selected at the start of the game.
   $('.character-container').click(function() {
     if (selectCharacter) {
+      //sets your character stats. allows you to select opponent.
       activeCharacter = $(this).data();
       selectCharacter = false;
       selectOponent = true;
@@ -114,8 +112,7 @@ $(document).ready(function() {
       $(this).parent().appendTo('.verses');
 
       //creates health bar
-      var cardBody = $(this).find('.card-body');
-      $(healthBar).appendTo(cardBody);
+      $(healthBar).appendTo($(this).find('.card-body'));
 
       //selects players name and adds it to h2 tag in verses area
       vsPlayerH2Span = $(`<span>${$(this).find('.card-title').text()} VS. </span>`);
@@ -126,11 +123,12 @@ $(document).ready(function() {
 /////selects current oponent.
     if ($(this).hasClass('opponents') && selectOponent) {
       $(this).addClass('current-oponent');
+      //sets current opponent stats
       activeOpponent = $(this).data();
       selectOponent = false;
       canAttack = true;
       
-      //creates attack button once opponent is selected. Checks if attackBtn is toggled.
+      //creates attack button once opponent is selected. Checks if attackBtn is toggled. only shows attack button when you can attack.
       $(attackBtn).appendTo('.verses');
       if ($(attackBtn).is(':hidden')) {
         $(attackBtn).toggle();
@@ -145,8 +143,7 @@ $(document).ready(function() {
       }
 
       //creates health bar
-      var cardBody = $(this).find('.card-body');
-      $(healthBar).clone().appendTo(cardBody);
+      $(healthBar).clone().appendTo($(this).find('.card-body'));
   
       //selects current oppoents name and adds it to h2 tag in verses area
       var vsEnemyH2Span = $(`<span>${$(this).find('.card-title').text()}</span>`);
