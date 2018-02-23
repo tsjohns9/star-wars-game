@@ -7,11 +7,11 @@
 * {
   box-sizing: border-box;
   font-family: Rebellion, "Times New Roman", Times, serif;
+  letter-spacing: 1px;
 }
 
 body {
   background: url('../images/cropped-1920-800-402078.jpg') no-repeat fixed center;
-  /* background-size: cover; */
 }
 
 h1 {
@@ -22,8 +22,6 @@ h1 {
   font-size: 12px;
 }
 
-
-
 img {
   width: 100%;
   height: 100px;
@@ -31,7 +29,7 @@ img {
 }
 
 h1 {
-  color: white;
+  color: rgb(241, 241, 241);
 }
 
 h5,p {
@@ -110,6 +108,9 @@ h5,p {
 @media(min-width: 768px) {
   .character-container {
     width: 14rem;
+  }
+  h1 {
+    font-size: 36px;
   }
   h5,p {
     font-size: 20px;

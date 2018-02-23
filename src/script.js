@@ -7,7 +7,7 @@ $(document).ready(function() {
   var canAttack = false;                //if false, you cannot attack and attack button does not show up
   var vsPlayerH2Span;                   //h2 changes to display current character and opponent, and only shows up when character is selected.
   var versesH2 = $(`<h2 class="text-center mb-4 alert alert-warning w-50 mx-auto"></h2>`);
-  var attackBtn = $(`<div class="mb-3 mb-md-0 text-center"><button type="button" class="btn btn-success" id="attack-btn">Attack</button></div>`);
+  var attackBtn = $(`<div class="mb-3 mb-md-0 text-center"><button type="button" class="btn btn-success mb-2" id="attack-btn">Attack</button><div id="damage-pts"></div></div>`);
   var healthBar = $(`<div class="progress"><div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div></div>`);
   var opponentHealthBar = $(`<div class="progress"><div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div></div>`);
 
@@ -45,12 +45,15 @@ $(document).ready(function() {
         activeCharacter.health -= activeOpponent.counter;
       }
 
+      //displays attack damage within the #damage-pts div, which is made within the attackBtn variable
+      $('#damage-pts').html(`<p class="text-white">You attacked ${activeOpponent.name} for ${activeCharacter.attack} damage!</p><p class="text-white">${activeOpponent.name} attacked you for ${activeOpponent.counter} damage!</p>`);
+
       //Displays percentage of health left on progress bar if health is greater than 0.
       var healthWidth = activeCharacter.health / activeCharacter.totalHealth * 100;
       var opponentHealthWidth = activeOpponent.health / activeOpponent.totalHealth * 100;
       if (activeCharacter.health > 0) {
         $('#' + activeCharacter.name).find('.card-body p').text(activeCharacter.health);
-        $('#' + activeCharacter.name).find('.bg-danger').css('width', healthWidth + '%');      
+        $('#' + activeCharacter.name).find('.bg-danger').css('width', healthWidth + '%');
       } else {
         //runs when character health is less than 0. displays an empty health bar, and alerts the game over modal.
         activeCharacter.health = 0;
@@ -67,32 +70,35 @@ $(document).ready(function() {
       //checks if opponent has health. displays opponent health bar
       if (activeOpponent.health > 0) {
         $('#' + activeOpponent.name).find('.card-body p').text(activeOpponent.health);
-        $('#' + activeOpponent.name).find('.bg-danger').css('width', opponentHealthWidth + '%');      
+        $('#' + activeOpponent.name).find('.bg-danger').css('width', opponentHealthWidth + '%');
       } else {
         //runs when opponent has no health. displays empty health bar.
         activeOpponent.health = 0;
         canAttack = false;
-        $(attackBtn).toggle();
+        $('#attack-btn').toggle();
         $('#' + activeOpponent.name).find('.card-body p').text(activeOpponent.health);
         $('#' + activeOpponent.name).find('.bg-danger').css('width', '0');
+
         //If all opponents are defeated then the game is over
         if ($('.all-characters .d-flex').children().length === 0) {
           $(versesH2).remove();
           $('#new-game-modal').modal('show');
+
         //allows selection of new opponent if one still exists.
         } else {
-          //Displays the name of the opponent you defeated
           $(versesH2).html(`You defeated ${activeOpponent.name}!`);
+
+          //Removes defeated opponent
           setTimeout(function() {
-            //Removes defeated opponent
             $('#' + activeOpponent.name).parent().hide();
+            $(attackBtn).toggle();
+            $('#damage-pts').html('');
             $(versesH2).html('Choose Next Opponent');
             selectOponent = true;
-          }, 1500);      
+          }, 1500);     
         }
       }
     }
-
   });
 
 ////allows a character to be selected at the start of the game.
@@ -128,8 +134,9 @@ $(document).ready(function() {
       
       //creates attack button once opponent is selected. Checks if attackBtn is toggled. only shows attack button when you can attack.
       $(attackBtn).appendTo('.verses');
-      if ($(attackBtn).is(':hidden')) {
+      if ($('#attack-btn').is(':hidden')) {
         $(attackBtn).toggle();
+        $('#attack-btn').toggle();
       }
 
       //moves selected character to verses area
@@ -144,7 +151,7 @@ $(document).ready(function() {
       $(opponentHealthBar).find('.bg-danger').css('width', '100%');
       $(opponentHealthBar).appendTo($(this).find('.card-body'));
       
-      //selects current oppoents name and adds it to h2 tag in verses area
+      //selects current opponents name and adds it to h2 tag in verses area
       var vsEnemyH2Span = $(`<span>${$(this).find('.card-title').text()}</span>`);
       $(versesH2).empty();
       $(vsPlayerH2Span).appendTo(versesH2);
