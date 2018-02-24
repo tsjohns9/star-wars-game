@@ -14,6 +14,7 @@
   <div class="container all-characters">
     <h1 class="text-center my-4 main-header">Choose Your Character</h1>
     <div class="d-flex justify-content-around row">
+
       <!-- luke -->
       <div class="text-center mb-3 mb-lg-0">
         <div class="card mx-auto character-container" data-name="luke" id="luke" data-toggle="tooltip" data-placement="bottom" data-html="true" title="<p class='m-0'><small>Attack: 20</small></p><p class='m-0'><small>Counter: 18</small></p>">
@@ -21,9 +22,14 @@
           <div class="card-body">
             <h5 class="card-title">Luke</h5>
             <p>225</p>
+            <div class="progress d-none">
+              <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+              </div>
+            </div>
           </div>
         </div>
       </div>
+
       <!-- Kylo -->
       <div class="text-center mb-3 mb-lg-0">
         <div class="card mx-auto character-container" data-name="kylo" id="kylo" data-toggle="tooltip" data-placement="bottom" data-html="true" title="<p class='m-0'><small>Attack: 10</small></p><p class='m-0'><small>Counter: 7</small></p>">
@@ -31,9 +37,14 @@
           <div class="card-body">
             <h5 class="card-title">Kylo Ren</h5>
             <p>130</p>
+            <div class="progress d-none">
+              <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+              </div>
+            </div>
           </div>         
         </div>
       </div>
+
       <!-- Rey -->
       <div class="text-center mb-3 mb-lg-0">
         <div class="card mx-auto character-container" data-name="rey" id="rey" data-toggle="tooltip" data-placement="bottom" data-html="true" title="<p class='m-0'><small>Attack: 7</small></p><p class='m-0'><small>Counter: 5</small></p>">
@@ -41,9 +52,14 @@
           <div class="card-body">
             <h5 class="card-title">Rey</h5>
             <p>125</p>
+            <div class="progress d-none">
+              <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+              </div>
+            </div>
           </div>         
         </div>
       </div>
+
       <!-- Snoke -->
       <div class="text-center mb-3 mb-lg-0">
         <div class="card mx-auto character-container" data-name="snoke" id="snoke" data-toggle="tooltip" data-placement="bottom" data-html="true" title="<p class='m-0'><small>Attack: 15</small></p><p class='m-0'><small>Counter: 9</small></p>">
@@ -51,12 +67,15 @@
           <div class="card-body">
             <h5 class="card-title">Snoke</h5>
             <p>165</p>
+            <div class="progress d-none">
+              <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+              </div>
+            </div>
           </div>         
         </div>
       </div>
-
-    </div>
-    </div> <!-- end all-characters div -->
+    </div> <!-- end row -->
+  </div> <!-- end all-characters div -->
 
     <div class="fight-area my-4">
       <h2 class="text-center mb-4 alert alert-warning w-50 mx-auto d-none"></h2>
