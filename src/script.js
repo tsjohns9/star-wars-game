@@ -3,7 +3,7 @@ $(document).ready(function() {
   var activeCharacter;                      //current character
   var activeOpponent;                       //current opponent
   var selectCharacter = true;               //if true, then you can select a new character. Only true at start.
-  var selectOponent = false;                //if true, you can select a new opponent.
+  var selectOpponent = false;                //if true, you can select a new opponent.
   var canAttack = false;                    //if false, you cannot attack and attack button does not show up
   $("[data-toggle='tooltip']").tooltip();   //initializes bootstrap tooltip
   $('.attack-btn-div').toggle();            // hides attack-btn-div at start.
@@ -35,7 +35,7 @@ $(document).ready(function() {
       //sets your character stats. allows you to select opponent.
       activeCharacter = $(this).data();
       selectCharacter = false;
-      selectOponent = true;
+      selectOpponent = true;
 
       //specifies your character. Your character has a green border.
       $(this).addClass('selected-character');
@@ -59,15 +59,15 @@ $(document).ready(function() {
       $('.fight-area h2').html(`<span>${$(this).find('.card-title').text()} VS. </span>`).removeClass('d-none');
     }
 
-/////selects current oponent
-    if ($(this).hasClass('opponents') && selectOponent) {
+/////selects current opponent
+    if ($(this).hasClass('opponents') && selectOpponent) {
 
       //specifies who you are fighting
-      $(this).addClass('current-oponent');
+      $(this).addClass('current-opponent');
 
       //sets current opponent stats
       activeOpponent = $(this).data();
-      selectOponent = false;
+      selectOpponent = false;
       canAttack = true;
       
       // Checks if attackBtn is toggled. only shows attack button when you can attack.
@@ -82,7 +82,7 @@ $(document).ready(function() {
       //hides tooltip when opponent is selected
       $('#' + activeOpponent.name).tooltip('dispose');
 
-      //Cleares out all-characters container if no opponents remain
+      //Clears out all-characters container if no opponents remain
       if ($('.all-characters .d-flex').children().length === 0) {
         $('.all-characters').remove();
       }
@@ -95,7 +95,7 @@ $(document).ready(function() {
     }
   });
 
-  /////attaches click event to attack-btn.
+///////attaches click event to attack-btn.
   $('#attack-btn').on('click', function() {
     if (canAttack) {
       counter++;
@@ -184,7 +184,7 @@ $(document).ready(function() {
 
             //adjusts h2 to alert you to choose a new opponent. allows selection of new opponent
             $('.fight-area h2').html('Choose Next Opponent');
-            selectOponent = true;
+            selectOpponent = true;
           }, 1500);     
         }
       }
